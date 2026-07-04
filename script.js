@@ -7,6 +7,7 @@ let timeLeft = 30; // Countdown time in seconds
 let dropCount = 0; // Tracks how many drops have spawned
 let spawnIntervalId; // Stores the active drop spawn timer
 let currentDifficulty = "normal";
+let milestoneReached = false;
 
 const difficultySettings = {
   easy: {
@@ -67,6 +68,31 @@ function updateScore() {
   document.getElementById("score").textContent = score;
 }
 
+function showMilestoneMessage() {
+  if (milestoneReached) return;
+
+  const difficulty = getCurrentDifficultySettings();
+  const milestoneThresholds = {
+    easy: 15,
+    normal: 20,
+    hard: 25,
+  };
+
+  const threshold = milestoneThresholds[currentDifficulty];
+  if (score < threshold) return;
+
+  milestoneReached = true;
+
+  const message = document.createElement("div");
+  message.className = "milestone-message";
+  message.textContent = "Halfway there!";
+  gameContainer.appendChild(message);
+
+  setTimeout(() => {
+    message.remove();
+  }, 1400);
+}
+
 function updateTimer() {
   document.getElementById("time").textContent = timeLeft;
 }
@@ -87,6 +113,7 @@ function handleDropHit(event) {
   }
 
   updateScore();
+  showMilestoneMessage();
   drop.remove();
 }
 
@@ -157,6 +184,7 @@ function resetGame() {
   score = 0;
   timeLeft = 30;
   dropCount = 0;
+  milestoneReached = false;
   updateScore();
   updateTimer();
   updateDifficultyInfo();
@@ -176,6 +204,7 @@ function startGame() {
   score = 0;
   timeLeft = 30;
   dropCount = 0;
+  milestoneReached = false;
   updateScore();
   updateTimer();
 

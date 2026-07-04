@@ -132,6 +132,22 @@ label,
     display: none;
 }
 
+.milestone-message {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 12;
+    padding: 10px 16px;
+    background: rgba(46, 157, 247, 0.95);
+    color: white;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 16px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+}
+
 #result-title {
     font-size: 28px;
     margin-bottom: 10px;
