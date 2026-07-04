@@ -6,13 +6,52 @@ let score = 0; // Tracks the player's points
 let timeLeft = 30; // Countdown time in seconds
 let dropCount = 0; // Tracks how many drops have spawned
 let spawnIntervalId; // Stores the active drop spawn timer
+let currentDifficulty = "normal";
+
+const difficultySettings = {
+  easy: {
+    label: "Easy",
+    winTarget: 30,
+    spawnSchedule: [1100, 650, 350],
+    badDropEvery: 12,
+    badDropPenalty: 1,
+  },
+  normal: {
+    label: "Normal",
+    winTarget: 40,
+    spawnSchedule: [900, 500, 250],
+    badDropEvery: 10,
+    badDropPenalty: 2,
+  },
+  hard: {
+    label: "Hard",
+    winTarget: 50,
+    spawnSchedule: [700, 400, 200],
+    badDropEvery: 8,
+    badDropPenalty: 3,
+  },
+};
 
 const gameContainer = document.getElementById("game-container");
 
 // Wait for button click to start the game
 document.getElementById("start-btn").addEventListener("click", startGame);
 document.getElementById("reset-btn").addEventListener("click", resetGame);
+document.getElementById("difficulty-select").addEventListener("change", (event) => {
+  currentDifficulty = event.target.value;
+  updateDifficultyInfo();
+});
 gameContainer.addEventListener("pointerdown", handleDropHit);
+
+function getCurrentDifficultySettings() {
+  return difficultySettings[currentDifficulty];
+}
+
+function updateDifficultyInfo() {
+  const difficulty = getCurrentDifficultySettings();
+  document.getElementById("win-target").textContent = difficulty.winTarget;
+  document.getElementById("difficulty-select").value = currentDifficulty;
+}
 
 function updateScore() {
   document.getElementById("score").textContent = score;
@@ -27,8 +66,10 @@ function handleDropHit(event) {
 
   if (!drop || !gameRunning) return;
 
+  const difficulty = getCurrentDifficultySettings();
+
   if (drop.classList.contains("bad-drop")) {
-    score -= 2;
+    score -= difficulty.badDropPenalty;
   } else {
     score += 1;
   }
@@ -60,14 +101,15 @@ function showResultPopup() {
   const popup = document.getElementById("result-popup");
   const title = document.getElementById("result-title");
   const message = document.getElementById("result-message");
+  const difficulty = getCurrentDifficultySettings();
 
-  if (score > 40) {
+  if (score >= difficulty.winTarget) {
     title.textContent = "Good Job!";
-    message.textContent = "You collected enough water to complete Charity Water's mission!";
+    message.textContent = `You reached ${score} points and met the ${difficulty.label.toLowerCase()} target of ${difficulty.winTarget}!`;
     createCelebrationEffect(true);
   } else {
     title.textContent = "Mission failed!";
-    message.textContent = "You did not collect enough water.";
+    message.textContent = `You needed ${difficulty.winTarget} points to win on ${difficulty.label.toLowerCase()} mode.`;
     createCelebrationEffect(false);
   }
 
@@ -98,6 +140,7 @@ function resetGame() {
   dropCount = 0;
   updateScore();
   updateTimer();
+  updateDifficultyInfo();
 
   gameContainer.querySelectorAll(".water-drop").forEach((drop) => drop.remove());
   document.getElementById("confetti-layer").innerHTML = "";
@@ -123,7 +166,7 @@ function startGame() {
   document.getElementById("result-popup").classList.add("hidden");
   document.getElementById("start-btn").textContent = "Playing...";
 
-  const spawnSchedule = [900, 500, 250];
+  const spawnSchedule = getCurrentDifficultySettings().spawnSchedule;
   let phase = 0;
 
   function startSpawnPhase() {
@@ -159,7 +202,7 @@ function createDrop() {
   const drop = document.createElement("div");
   drop.className = "water-drop";
 
-  if (dropCount % 10 === 0) {
+  if (dropCount % getCurrentDifficultySettings().badDropEvery === 0) {
     drop.classList.add("bad-drop");
   }
 
@@ -189,3 +232,4 @@ function createDrop() {
 
 updateScore();
 updateTimer();
+updateDifficultyInfo();
