@@ -31,7 +31,29 @@ body {
     min-height: 100vh;
     padding: 20px;
     background-color: #d4d4d4;
-    font-family: Arial, sans-serif;
+    font-family: 'Proxima Nova', 'Avenir', Arial, sans-serif;
+}
+
+body,
+button,
+select,
+input,
+textarea,
+h1,
+h2,
+p,
+a,
+label,
+.score,
+.timer,
+.win-target,
+.game-title,
+.game-tagline,
+.charity-footer,
+.footer-links a,
+#result-title,
+#result-message {
+    font-family: 'Proxima Nova', 'Avenir', Arial, sans-serif;
 }
 
 .game-wrapper {
@@ -129,6 +151,7 @@ body {
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
+    font-family: 'Proxima Nova', Arial, sans-serif;
 }
 
 #start-btn {
@@ -167,6 +190,7 @@ body {
     border: 1px solid #2e9df7;
     border-radius: 4px;
     font-size: 15px;
+    font-family: 'Proxima Nova', Arial, sans-serif;
 }
 
 .score {
@@ -255,6 +279,40 @@ body {
     opacity: 0.85;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
     animation: waterCanBounce 2.5s ease-in-out infinite;
+}
+
+.charity-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 18px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+.charity-footer p {
+    color: #234;
+    font-weight: 600;
+}
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+}
+
+.footer-links a {
+    color: #2e9df7;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
 }
 
 @keyframes waterCanBounce {

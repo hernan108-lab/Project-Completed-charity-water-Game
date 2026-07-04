@@ -33,6 +33,16 @@ const difficultySettings = {
 };
 
 const gameContainer = document.getElementById("game-container");
+const startSound = new Audio("img/49447089-game-start-317318.mp3");
+const loseSound = new Audio("img/alphix-game-over-417465.mp3");
+const winSound = new Audio("img/cartoon-music-game-sfx-arcade-game-achievement-bling-489759.mp3");
+const dropSound = new Audio("img/cartoon-music-game-sfx-arcade-game-victory-chime-489761.mp3");
+
+function playSound(audio) {
+  if (!audio) return;
+  audio.currentTime = 0;
+  audio.play().catch(() => {});
+}
 
 // Wait for button click to start the game
 document.getElementById("start-btn").addEventListener("click", startGame);
@@ -65,6 +75,8 @@ function handleDropHit(event) {
   const drop = event.target.closest(".water-drop");
 
   if (!drop || !gameRunning) return;
+
+  playSound(dropSound);
 
   const difficulty = getCurrentDifficultySettings();
 
@@ -125,6 +137,13 @@ function endGame() {
   const gameContainer = document.getElementById("game-container");
   gameContainer.querySelectorAll(".water-drop").forEach((drop) => drop.remove());
 
+  const difficulty = getCurrentDifficultySettings();
+  if (score >= difficulty.winTarget) {
+    playSound(winSound);
+  } else {
+    playSound(loseSound);
+  }
+
   showResultPopup();
   document.getElementById("start-btn").textContent = "Start Game";
 }
@@ -151,6 +170,8 @@ function resetGame() {
 function startGame() {
   // Prevent multiple games from running at once
   if (gameRunning) return;
+
+  playSound(startSound);
 
   score = 0;
   timeLeft = 30;
