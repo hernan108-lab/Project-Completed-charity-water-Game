@@ -5,7 +5,7 @@ In this game, users collect as many falling water drops as possible. Users tap t
 
 The starter files already include:
 
-- A **heading and tagline**
+- A **heading and tagline** 
 - A **start button**
 - A **game container** where water drops appear
 - A **placeholder timer and score** (not functional yet)
